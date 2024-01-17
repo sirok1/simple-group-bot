@@ -53,6 +53,15 @@ export class Logger {
                 level: "debug"
             }))
         }
+        else {
+            this.logger.add(new winston.transports.Console({
+                format: winston.format.combine(
+                    winston.format.colorize(),
+                    this.formatting()
+                ),
+                level: "info"
+            }))
+        }
         if (process.env.LOKI_HOST) {
             this.logger.add(
                 new LokiTransport({
