@@ -1,0 +1,55 @@
+version: "3.9"
+services:
+  #dashboard https://grafana.com/grafana/dashboards/893-main/
+  grafana:
+    image: grafana/grafana-oss:10.0.10-ubuntu
+    container_name: grafana
+    environment:
+      GF_INSTALL_PLUGINS: redis-explorer-app
+    volumes:
+      - grafana_storage:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - test-network
+  loki:
+    container_name: loki
+    image: grafana/loki:latest
+    command:
+      - '-config.file=/etc/loki/local-config.yaml'
+    depends_on:
+      promtail:
+        condition: service_started
+    ports:
+      - "3100:3100"
+    networks:
+      - test-network
+  promtail:
+    container_name: promtail
+    image: grafana/promtail:latest
+    command:
+      - '-config.file=/etc/promtail/config.yml'
+    networks:
+      - test-network
+  queue:
+    container_name: queue
+    image: rabbitmq:latest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_CONSOLE_LOG: new
+      RABBITMQ_DEFAULT_USER: "sirok"
+      RABBITMQ_DEFAULT_PASS: "gbplf"
+      RABBITMQ_LOGS: /var/log/queue/queue.log
+#    command:
+#      - "rabbitmq-plugins enable rabbitmq_management"
+    volumes:
+      - ./logs/queue:/var/log/queue
+    networks:
+      - test-network
+volumes:
+  grafana_storage: {}
+networks:
+  test-network:
+    name: test-network

@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model User {
+  id        BigInt   @id @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  role      Role     @default(USER)
+  groups    Group[]
+}
+
+model Group {
+  id              BigInt    @id @unique
+  pendingMessages Message[]
+  User            User?     @relation(fields: [userId], references: [id])
+  userId          BigInt?
+  title           String
+}
+
+model Message {
+  id       Int       @id @default(autoincrement())
+  text     String
+  sendDate DateTime?
+  Group    Group?    @relation(fields: [groupId], references: [id])
+  groupId  BigInt?
+}
