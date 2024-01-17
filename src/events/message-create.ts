@@ -23,6 +23,11 @@ export default function (client:Client) {
                 },
                 parse_mode: "Markdown"
             })
+            await ctx.reply("Сообщение успешно отправлено 🥳", {
+                reply_markup: {
+                    inline_keyboard: [[{text: "Отправить ещё одно сообщение с ссылкой", callback_data: "message-link"}]]
+                }
+            })
             // if (cacheData.message.photo) {
             //     await ctx.telegram.sendMediaGroup(Number(cacheData.groupId), [Object.assign({}, cacheData.message.photo.shift, {caption: cacheData.message.caption}), ...cacheData.message.photo], {
             //
