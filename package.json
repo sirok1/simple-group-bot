@@ -12,7 +12,7 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production node build/app.js",
-    "build": "tsc --pretty && tspath -f",
+    "build": "tsc && resolve-tspaths",
     "dev": "cross-env NODE_ENV=development nodemon",
     "force-start": "cross-env NODE_ENV=production tsc && node build/app.js",
     "lint": "eslint . --ext .ts",
@@ -33,6 +33,7 @@
     "node-env": "^0.1.6",
     "nodemon": "^3.0.2",
     "prisma": "^5.8.1",
+    "resolve-tspaths": "^0.8.17",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"
@@ -43,7 +44,6 @@
     "dotenv": "^16.3.1",
     "redis": "^4.6.12",
     "telegraf": "^4.15.3",
-    "tspath": "^2.6.8",
     "winston": "^3.11.0",
     "winston-loki": "^6.0.8"
   },
