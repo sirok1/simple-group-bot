@@ -106,8 +106,7 @@ export default class Client extends EventEmitter {
     private ready(tgBotInfo: any) {
         this.READY = true
         this.readyAt = new Date()
-        //@ts-ignore
-        if (process.env.NODE_ENV === "production") process!.send("ready")
+        // if (process.env.NODE_ENV === "production") process!.send("ready")
         this.emit("ready", tgBotInfo)
     }
 
